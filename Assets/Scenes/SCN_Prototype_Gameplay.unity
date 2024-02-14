@@ -742,7 +742,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myrb: {fileID: 1266862933}
   friction: {x: 0.1, y: 0}
-  speed: 15
+  speed: 10
+  speedRun: 20
   forceJump: 25
 --- !u!1 &1433910154
 GameObject:
