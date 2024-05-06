@@ -23,12 +23,14 @@ public class PlayerController : MonoBehaviour
     [Header("Animation Setup")]
     public float jumpScaleY = 1.5f;
     public float jumpScaleX = 0.7f;
-    /*public float squishyScaleX = 1.5f;
-    public float squishyScaleY = 0.7f;
-    public float squishyanimationDuration = 0.3f;*/
     public float animationDuration = .3f;
     public Ease ease = Ease.OutBack;
-    //public GameObject player;
+
+    [Header("Animation Player")]
+    public string boolRun = "Run";
+    public Animator animator;
+    public float playerSwipeDuration = .1f;
+
     
 
 
@@ -41,21 +43,42 @@ public class PlayerController : MonoBehaviour
     private void HandleMovement()
     {
         if (Input.GetKey(KeyCode.LeftControl))
+        {
             _currentSpeed = speedRun;
+            animator.speed = 1.5f;
+        }
+
         else
+        {
             _currentSpeed = speed;
-       
+            animator.speed = 1f;
+
+        }
+
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            //myrb.MovePosition(myrb.position - velocity * Time.deltaTime);
             myrb.velocity = new Vector2(-_currentSpeed, myrb.velocity.y);
+            
+            if(myrb.transform.localScale.x != -1)
+            {
+                myrb.transform.DOScaleX(-1, playerSwipeDuration);
+            }
+
+            animator.SetBool(boolRun, true);
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
-            //myrb.MovePosition(myrb.position + velocity * Time.deltaTime);
             myrb.velocity = new Vector2(_currentSpeed, myrb.velocity.y);
-
+            if (myrb.transform.localScale.x != 1)
+            {
+                myrb.transform.DOScaleX(1, playerSwipeDuration);
+            }
+            animator.SetBool(boolRun, true);
+        }
+        else
+        {
+            animator.SetBool(boolRun, false);
         }
 
         if(myrb.velocity.x > 0)
@@ -91,27 +114,10 @@ public class PlayerController : MonoBehaviour
          _isJumping = false;
     }
 
-    /*private void OnCollisionEnter2D(Collision2D collision)
-    {
-      if (gameObject.CompareTag("Floor") && !_isJumping)
-        {
-            myrb.transform.DOScaleX(squishyScaleX, squishyanimationDuration).SetLoops(2, LoopType.Yoyo);
-            myrb.transform.DOScaleY(squishyScaleY, squishyanimationDuration).SetLoops(2, LoopType.Yoyo);
-        } 
-    }*/
 
     private void HandleScaleJump()
     {
         myrb.transform.DOScaleY(jumpScaleY, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(ease);
         myrb.transform.DOScaleX(jumpScaleX, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(ease);
     }
-
-    /*IEnumerator AnimationScaleJump()
-    {
-        myrb.transform.DOScaleX(squishyScaleX, squishyanimationDuration).SetLoops(2, LoopType.Yoyo);
-        myrb.transform.DOScaleY(squishyScaleY, squishyanimationDuration).SetLoops(2, LoopType.Yoyo);
-        yield return new WaitForSeconds(squishyanimationDuration);
-        myrb.transform.DOScaleY(jumpScaleY, animationDuration).SetLoops(2, LoopType.Yoyo);
-        myrb.transform.DOScaleX(jumpScaleX, animationDuration).SetLoops(2, LoopType.Yoyo);
-    }*/
 }
