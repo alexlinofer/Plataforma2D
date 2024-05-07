@@ -1,24 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Plataforma2D.Singleton;
 
-public class CollectableManager : MonoBehaviour
+
+public class CollectableManager : Singleton<CollectableManager>
 {
-    public static CollectableManager Instance;
-
     public int coins;
 
-    private void Awake()
+
+    private void Start()
     {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(gameObject);
-
-
         Reset();
     }
-
 
     private void Reset()
     {
