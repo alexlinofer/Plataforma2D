@@ -10,29 +10,16 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D myrb;
     public HealthBase healthBase;
 
-    [Header("Speed Setup")]
-    public Vector2 friction = new Vector2(1f, 0);
-    public float speed;
-    public float speedRun;
-    public float forceJump = 10;
+    [Header("Player Setup")]
+    public SOPlayerSetup soPlayerSetup;
+
+
+    //public Animator animator;
 
     private bool _isJumping = false;
     private float _currentSpeed;
+    private Animator _currentPlayer;
 
-
-    [Header("Animation Setup")]
-    public float jumpScaleY = 1.5f;
-    public float jumpScaleX = 0.7f;
-    public float animationDuration = .3f;
-    public Ease ease = Ease.OutBack;
-
-    [Header("Animation Player")]
-    public string boolRun = "Run";
-    public string triggerDeath = "Death";
-    public Animator animator;
-    public float playerSwipeDuration = .1f;
-
-    
 
     private void Awake()
     {
@@ -40,13 +27,15 @@ public class PlayerController : MonoBehaviour
         {
             healthBase.OnKill += OnPlayerKill;
         }
+
+        _currentPlayer = Instantiate(soPlayerSetup.player, transform);
         
     }
 
     private void OnPlayerKill()
     {
         healthBase.OnKill -= OnPlayerKill;
-        animator.SetTrigger(triggerDeath);
+        _currentPlayer.SetTrigger(soPlayerSetup.triggerDeath);
     }
 
 
@@ -60,14 +49,14 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftControl))
         {
-            _currentSpeed = speedRun;
-            animator.speed = 1.5f;
+            _currentSpeed = soPlayerSetup.speedRun;
+            _currentPlayer.speed = 1.5f;
         }
 
         else
         {
-            _currentSpeed = speed;
-            animator.speed = 1f;
+            _currentSpeed = soPlayerSetup.speed;
+            _currentPlayer.speed = 1f;
 
         }
 
@@ -78,32 +67,32 @@ public class PlayerController : MonoBehaviour
             
             if(myrb.transform.localScale.x != -1)
             {
-                myrb.transform.DOScaleX(-1, playerSwipeDuration);
+                myrb.transform.DOScaleX(-1, soPlayerSetup.playerSwipeDuration);
             }
 
-            animator.SetBool(boolRun, true);
+            _currentPlayer.SetBool(soPlayerSetup.boolRun, true);
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
             myrb.velocity = new Vector2(_currentSpeed, myrb.velocity.y);
             if (myrb.transform.localScale.x != 1)
             {
-                myrb.transform.DOScaleX(1, playerSwipeDuration);
+                myrb.transform.DOScaleX(1, soPlayerSetup.playerSwipeDuration);
             }
-            animator.SetBool(boolRun, true);
+            _currentPlayer.SetBool(soPlayerSetup.boolRun, true);
         }
         else
         {
-            animator.SetBool(boolRun, false);
+            _currentPlayer.SetBool(soPlayerSetup.boolRun, false);
         }
 
         if(myrb.velocity.x > 0)
         {
-            myrb.velocity -= friction;
+            myrb.velocity -= soPlayerSetup.friction;
         }
         else if(myrb.velocity.x < 0)
         {
-            myrb.velocity += friction;
+            myrb.velocity += soPlayerSetup.friction;
         }
 
     }
@@ -121,7 +110,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator JumpTimer()
     {
         _isJumping = true;
-        myrb.velocity = Vector2.up * forceJump;
+        myrb.velocity = Vector2.up * soPlayerSetup.forceJump;
         myrb.transform.localScale = Vector2.one;
         DOTween.Kill(myrb.transform);
 
@@ -133,8 +122,8 @@ public class PlayerController : MonoBehaviour
 
     private void HandleScaleJump()
     {
-        myrb.transform.DOScaleY(jumpScaleY, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(ease);
-        myrb.transform.DOScaleX(jumpScaleX, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(ease);
+        myrb.transform.DOScaleY(soPlayerSetup.jumpScaleY, soPlayerSetup.animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(soPlayerSetup.ease);
+        myrb.transform.DOScaleX(soPlayerSetup.jumpScaleX, soPlayerSetup.animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(soPlayerSetup.ease);
     }
 
     public void DestroyMe()

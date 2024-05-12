@@ -7,7 +7,7 @@ using TMPro;
 
 public class CollectableManager : Singleton<CollectableManager>
 {
-    public int coins;
+    public SOInt coins;
     public TextMeshProUGUI uiTextCoins;
 
 
@@ -18,20 +18,20 @@ public class CollectableManager : Singleton<CollectableManager>
 
     private void Reset()
     {
-        coins = 0;
+        coins.value = 0;
         UpdateUI();
     }
 
     public void AddCoins(int amount = 1)
     {
-        coins += amount;
+        coins.value += amount;
         UpdateUI();
     }
 
     private void UpdateUI()
     {
         //uiTextCoins.text = coins.ToString();
-        UIInGameManager.UpdateTextCoins(coins.ToString());
+        //UIInGameManager.UpdateTextCoins(coins.value.ToString());
     }
 
 }
