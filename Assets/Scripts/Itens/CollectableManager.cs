@@ -8,7 +8,9 @@ using TMPro;
 public class CollectableManager : Singleton<CollectableManager>
 {
     public SOInt coins;
+    public SOInt satellites;
     public TextMeshProUGUI uiTextCoins;
+    public TextMeshProUGUI uiTextSatellites;
 
 
     private void Start()
@@ -18,13 +20,20 @@ public class CollectableManager : Singleton<CollectableManager>
 
     private void Reset()
     {
+        satellites.value = 0;
         coins.value = 0;
         UpdateUI();
+
     }
 
     public void AddCoins(int amount = 1)
     {
         coins.value += amount;
+        UpdateUI();
+    }
+    public void AddSatellites(int amount = 1)
+    {
+        satellites.value += amount;
         UpdateUI();
     }
 

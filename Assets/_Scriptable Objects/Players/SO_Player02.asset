@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: SO_Player02
   m_EditorClassIdentifier: 
   player: {fileID: 6413013834153556191, guid: 4d919316d591f32489a304c85a8b5c30, type: 3}
+  soPlayerString: {fileID: 11400000, guid: 2eafb226276fa574a8a10c662dc887d6, type: 2}
   friction: {x: 5, y: 0}
   speed: 15
   speedRun: 25
