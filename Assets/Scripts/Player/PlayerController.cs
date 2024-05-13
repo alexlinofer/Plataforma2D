@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D myrb;
     public HealthBase healthBase;
 
+    public event System.Action OnPlayerDestroyed;
+
     [Header("Player Setup")]
     public SOPlayerSetup soPlayerSetup;
 
@@ -128,6 +130,7 @@ public class PlayerController : MonoBehaviour
 
     public void DestroyMe()
     {
+        OnPlayerDestroyed?.Invoke();
         Destroy(gameObject);
     }
 

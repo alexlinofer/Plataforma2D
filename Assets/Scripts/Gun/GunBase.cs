@@ -9,9 +9,18 @@ public class GunBase : MonoBehaviour
     public KeyCode shootKey = KeyCode.LeftControl;
     public float timeBetweenShoot = 0.3f;
 
-    public Transform playerSideReference;
+    private Transform playerSideReference;
 
     private Coroutine _currentCoroutine;
+
+    private void Start()
+    {
+        GameObject playerObject = GameObject.Find("Player");
+        if (playerObject != null) 
+        {
+            playerSideReference = playerObject.transform;
+        }
+    }
 
     private void Update()
     {

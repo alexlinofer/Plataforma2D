@@ -4,7 +4,24 @@ using UnityEngine;
 
 public class PlayerDestroyHelper : MonoBehaviour
 {
-    public PlayerController playerController;
+    private PlayerController playerController;
+
+    private void Start()
+    {
+        playerController = FindObjectOfType<PlayerController>();
+        if (playerController == null)
+        {
+            playerController.OnPlayerDestroyed += KillPlayer;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (playerController != null)
+        {
+            playerController.OnPlayerDestroyed -= KillPlayer;
+        }
+    }
 
     public void KillPlayer()
     {

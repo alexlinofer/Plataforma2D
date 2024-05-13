@@ -9,6 +9,7 @@ public class SOPlayerSetup : ScriptableObject
 {
     public Animator player;
     public SOString soPlayerString;
+    public PlayerDestroyHelper playerDestroyHelper;
 
     [Header("Speed Setup")]
     public Vector2 friction = new Vector2(1f, 0);
