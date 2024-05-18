@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using Unity.VisualScripting;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,10 +16,16 @@ public class PlayerController : MonoBehaviour
     [Header("Player Setup")]
     public SOPlayerSetup soPlayerSetup;
 
+    [Header("Jump Collision Check")]
+    public Collider2D collider2D;
+    public float distToGround;
+    public float spaceToGround = 0.1f;
+    public ParticleSystem jumpVFX;
+
 
     //public Animator animator;
 
-    private bool _isJumping = false;
+    //private bool _isJumping = false;
     private float _currentSpeed;
     private Animator _currentPlayer;
 
@@ -31,7 +38,18 @@ public class PlayerController : MonoBehaviour
         }
 
         _currentPlayer = Instantiate(soPlayerSetup.player, transform);
+
+        if(collider2D != null)
+        {
+            distToGround = collider2D.bounds.extents.y;
+        }
         
+    }
+
+    private bool IsGrounded()
+    {
+        Debug.DrawRay(transform.position, -Vector2.up, Color.magenta, distToGround + spaceToGround);
+        return Physics2D.Raycast(transform.position, -Vector2.up, distToGround + spaceToGround);
     }
 
     private void OnPlayerKill()
@@ -43,6 +61,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        IsGrounded();
         HandleJump();
         HandleMovement();
     }
@@ -102,14 +121,29 @@ public class PlayerController : MonoBehaviour
 
     private void HandleJump()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow) && !_isJumping)
+        if (Input.GetKeyDown(KeyCode.UpArrow) && IsGrounded())
         {
-            StartCoroutine(JumpTimer());
+            myrb.velocity = Vector2.up * soPlayerSetup.forceJump;
+            myrb.transform.localScale = Vector2.one;
+
+            DOTween.Kill(myrb.transform);
+
+
+            //StartCoroutine(JumpTimer());
+            PlayJumpVFX();
             HandleScaleJump();
         }
     }
 
-    IEnumerator JumpTimer()
+    private void PlayJumpVFX()
+    {
+        if(jumpVFX != null)
+        {
+            jumpVFX.Play();
+        }
+    }
+
+    /*IEnumerator JumpTimer()
     {
         _isJumping = true;
         myrb.velocity = Vector2.up * soPlayerSetup.forceJump;
@@ -119,7 +153,7 @@ public class PlayerController : MonoBehaviour
 
          yield return new WaitForSeconds(0.9f);
          _isJumping = false;
-    }
+    }*/
 
 
     private void HandleScaleJump()
