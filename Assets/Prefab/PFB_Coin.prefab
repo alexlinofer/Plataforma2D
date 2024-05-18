@@ -112,7 +112,7 @@ Transform:
   m_GameObject: {fileID: 8432228882988268773}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.86, y: 9.47, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   compareTag: Player
+  particleSystemPrefab: {fileID: 7522682530589060793, guid: e4888ff69bde9204f9180f05cd2aed9a, type: 3}
 --- !u!95 &1846054333251514159
 Animator:
   serializedVersion: 5

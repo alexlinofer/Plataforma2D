@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 141872866071834072}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -19.50338, y: 17.93217, z: 9.646973}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -85,6 +85,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   compareTag: Player
+  particleSystemPrefab: {fileID: 7522682530589060793, guid: 8c3dc968b1b0ebc44bbb456765833ae2, type: 3}
 --- !u!60 &8314709106369773738
 PolygonCollider2D:
   m_ObjectHideFlags: 0
