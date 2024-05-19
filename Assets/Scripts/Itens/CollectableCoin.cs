@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class CollectableCoin : CollectableBase
 {
+
+
     protected override void OnCollect()
     {
         base.OnCollect();
         CollectableManager.Instance.AddCoins();
+        
+        
+
     }
 
 
