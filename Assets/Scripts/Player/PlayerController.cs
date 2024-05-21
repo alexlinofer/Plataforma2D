@@ -1,10 +1,7 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using DG.Tweening;
-using System;
-using Unity.VisualScripting;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,6 +12,8 @@ public class PlayerController : MonoBehaviour
 
     [Header("Player Setup")]
     public SOPlayerSetup soPlayerSetup;
+    public AudioSource audioJumper;
+    public Transform spawnPoint;
 
     [Header("Jump Collision Check")]
     public Collider2D collider2D;
@@ -22,28 +21,44 @@ public class PlayerController : MonoBehaviour
     public float spaceToGround = 0.1f;
     public ParticleSystem jumpVFX;
 
-
-    //public Animator animator;
-
-    //private bool _isJumping = false;
     private float _currentSpeed;
     private Animator _currentPlayer;
 
-
     private void Awake()
     {
-        if(healthBase != null)
+        if (healthBase != null)
         {
             healthBase.OnKill += OnPlayerKill;
         }
 
         _currentPlayer = Instantiate(soPlayerSetup.player, transform);
 
-        if(collider2D != null)
+        // Procura o spawnPoint na cena pela tag
+        GameObject spawnPointObject = GameObject.FindWithTag("SpawnPoint");
+        if (spawnPointObject != null)
+        {
+            spawnPoint = spawnPointObject.transform;
+        }
+        else
+        {
+            Debug.LogError("Spawn point not found in the scene.");
+        }
+
+        if (collider2D != null)
         {
             distToGround = collider2D.bounds.extents.y;
         }
-        
+
+        // Atualize a referência do jogador no GunBase
+        UpdateGunBasePlayerReference();
+    }
+
+    public void Respawn()
+    {
+        _currentPlayer = Instantiate(soPlayerSetup.player, spawnPoint.transform);
+
+        // Atualize a referência do jogador no GunBase
+        UpdateGunBasePlayerReference();
     }
 
     private bool IsGrounded()
@@ -56,8 +71,16 @@ public class PlayerController : MonoBehaviour
     {
         healthBase.OnKill -= OnPlayerKill;
         _currentPlayer.SetTrigger(soPlayerSetup.triggerDeath);
+
+        // Chame o método de respawn após uma pequena espera para simular a morte
+        StartCoroutine(RespawnAfterDelay());
     }
 
+    private IEnumerator RespawnAfterDelay()
+    {
+        yield return new WaitForSeconds(2); // ajuste o tempo conforme necessário
+        Respawn();
+    }
 
     private void Update()
     {
@@ -73,20 +96,17 @@ public class PlayerController : MonoBehaviour
             _currentSpeed = soPlayerSetup.speedRun;
             _currentPlayer.speed = 1.5f;
         }
-
         else
         {
             _currentSpeed = soPlayerSetup.speed;
             _currentPlayer.speed = 1f;
-
         }
-
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             myrb.velocity = new Vector2(-_currentSpeed, myrb.velocity.y);
-            
-            if(myrb.transform.localScale.x != -1)
+
+            if (myrb.transform.localScale.x != -1)
             {
                 myrb.transform.DOScaleX(-1, soPlayerSetup.playerSwipeDuration);
             }
@@ -107,17 +127,15 @@ public class PlayerController : MonoBehaviour
             _currentPlayer.SetBool(soPlayerSetup.boolRun, false);
         }
 
-        if(myrb.velocity.x > 0)
+        if (myrb.velocity.x > 0)
         {
             myrb.velocity -= soPlayerSetup.friction;
         }
-        else if(myrb.velocity.x < 0)
+        else if (myrb.velocity.x < 0)
         {
             myrb.velocity += soPlayerSetup.friction;
         }
-
     }
-
 
     private void HandleJump()
     {
@@ -125,11 +143,10 @@ public class PlayerController : MonoBehaviour
         {
             myrb.velocity = Vector2.up * soPlayerSetup.forceJump;
             myrb.transform.localScale = Vector2.one;
+            audioJumper.Play();
 
             DOTween.Kill(myrb.transform);
 
-
-            //StartCoroutine(JumpTimer());
             PlayJumpVFX();
             HandleScaleJump();
         }
@@ -137,23 +154,8 @@ public class PlayerController : MonoBehaviour
 
     private void PlayJumpVFX()
     {
-        //if(jumpVFX != null) jumpVFX.Play();
-
         VFXManager.Instance.PlayVFXByType(VFXManager.VFXType.JUMP, transform.position);
     }
-
-    /*IEnumerator JumpTimer()
-    {
-        _isJumping = true;
-        myrb.velocity = Vector2.up * soPlayerSetup.forceJump;
-        myrb.transform.localScale = Vector2.one;
-        DOTween.Kill(myrb.transform);
-
-
-         yield return new WaitForSeconds(0.9f);
-         _isJumping = false;
-    }*/
-
 
     private void HandleScaleJump()
     {
@@ -167,4 +169,12 @@ public class PlayerController : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void UpdateGunBasePlayerReference()
+    {
+        GunBase gunBase = FindObjectOfType<GunBase>();
+        if (gunBase != null)
+        {
+            gunBase.UpdatePlayerReference();
+        }
+    }
 }

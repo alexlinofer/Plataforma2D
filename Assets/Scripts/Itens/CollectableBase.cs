@@ -9,13 +9,22 @@ public class CollectableBase : MonoBehaviour
     public ParticleSystem particleSystem;
     public float timeToHide = 3f;
     public GameObject graphicItem;
-    //public ParticleSystem particleSystemPrefab;
+    public Collider2D collider2D;
 
     [Header("Sounds")]
     public AudioSource audioSource;
-    //public AudioSource audioSourcePrefab;
 
+    private GameManager gameManager;
 
+    private void Start()
+    {
+        gameManager = GameManager.Instance;
+
+        if (gameManager == null)
+        {
+            Debug.LogError("GameManager instance is null.");
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -27,11 +36,11 @@ public class CollectableBase : MonoBehaviour
 
     protected virtual void Collect()
     {
-       if(graphicItem != null) graphicItem.SetActive(false);
+        if (graphicItem != null) graphicItem.SetActive(false);
+        if (collider2D != null) collider2D.enabled = false;
         Invoke("HideObject", timeToHide);
         OnCollect();
-
-        //gameObject.SetActive(false);     
+        gameManager.DecreaseCollectableCount();
     }
 
     private void HideObject()
@@ -43,28 +52,6 @@ public class CollectableBase : MonoBehaviour
     {
         if (particleSystem != null) particleSystem.Play();
         if (audioSource != null) audioSource.Play();
-
-
-        /*
-        if (audioSourcePrefab != null)
-        {
-
-            AudioSource instantiatedAudioSource = Instantiate(audioSourcePrefab, transform.position, Quaternion.identity);
-            instantiatedAudioSource.Play();
-
-            Destroy(instantiatedAudioSource.gameObject, instantiatedAudioSource.clip.length);
-        }
-
-
-            if (particleSystemPrefab != null)
-        {
-            ParticleSystem instantiatedParticleSystem = Instantiate(particleSystemPrefab, transform.position, Quaternion.identity);
-            instantiatedParticleSystem.Play();
-
-            Destroy(instantiatedParticleSystem.gameObject, instantiatedParticleSystem.main.duration);
-        }*/
     }
-    
-
 }
 

@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 5977307854536402399}
   - component: {fileID: 6284249226294104307}
+  - component: {fileID: 8314709106369773738}
   - component: {fileID: 8230921749274983869}
   - component: {fileID: 6406865115560159714}
-  - component: {fileID: 8314709106369773738}
   m_Layer: 0
   m_Name: PFB_Satellite
-  m_TagString: Untagged
+  m_TagString: Collectable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59,38 +59,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8230921749274983869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 141872866071834072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b434f0bcb502ae345b8975a949352a80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 6284249226294104307}
-  triggerToPlay: FlyBool
-  keyToTrigger: 97
---- !u!114 &6406865115560159714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 141872866071834072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42b4806600f026f428ffba4ec0df73e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  compareTag: Player
-  particleSystem: {fileID: 2789956598133930806}
-  timeToHide: 3
-  graphicItem: {fileID: 6438287145557797084}
-  audioSource: {fileID: 5404670165121972908}
 --- !u!60 &8314709106369773738
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -141,6 +109,39 @@ PolygonCollider2D:
       - {x: 0.58778536, y: -0.80901694}
       - {x: 0.9510565, y: 0.30901712}
   m_UseDelaunayMesh: 0
+--- !u!114 &8230921749274983869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141872866071834072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b434f0bcb502ae345b8975a949352a80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 6284249226294104307}
+  triggerToPlay: FlyBool
+  keyToTrigger: 97
+--- !u!114 &6406865115560159714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141872866071834072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42b4806600f026f428ffba4ec0df73e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  compareTag: Player
+  particleSystem: {fileID: 2789956598133930806}
+  timeToHide: 3
+  graphicItem: {fileID: 6438287145557797084}
+  collider2D: {fileID: 8314709106369773738}
+  audioSource: {fileID: 5404670165121972908}
 --- !u!1 &1705068991217726934
 GameObject:
   m_ObjectHideFlags: 0

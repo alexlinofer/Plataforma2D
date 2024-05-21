@@ -93,12 +93,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2502057499413743985}
-  - component: {fileID: 1566170554884900629}
+  - component: {fileID: 3214322499395602643}
   - component: {fileID: 6765230050232605885}
   - component: {fileID: 1846054333251514159}
   m_Layer: 0
   m_Name: PFB_Coin
-  m_TagString: Untagged
+  m_TagString: Collectable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -121,7 +121,7 @@ Transform:
   - {fileID: 2211402480056537512}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &1566170554884900629
+--- !u!58 &3214322499395602643
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,9 +153,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.06479156, y: 0}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1.8900274
+  m_Radius: 0.5
 --- !u!114 &6765230050232605885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,6 +172,7 @@ MonoBehaviour:
   particleSystem: {fileID: 2161900392546417969}
   timeToHide: 3
   graphicItem: {fileID: 5030495990045258910}
+  collider2D: {fileID: 3214322499395602643}
   audioSource: {fileID: 7176613022361047562}
 --- !u!95 &1846054333251514159
 Animator:

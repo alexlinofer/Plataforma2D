@@ -8,6 +8,7 @@ public class GunBase : MonoBehaviour
     public Transform positionToShoot;
     public KeyCode shootKey = KeyCode.LeftControl;
     public float timeBetweenShoot = 0.3f;
+    public AudioRandomPlayAudioClips audioRandomPlayAudioClips;
 
     private Transform playerSideReference;
 
@@ -15,11 +16,7 @@ public class GunBase : MonoBehaviour
 
     private void Start()
     {
-        GameObject playerObject = GameObject.Find("Player");
-        if (playerObject != null) 
-        {
-            playerSideReference = playerObject.transform;
-        }
+        UpdatePlayerReference();
     }
 
     private void Update()
@@ -32,9 +29,10 @@ public class GunBase : MonoBehaviour
         {
             if (_currentCoroutine != null)
             {
-               StopCoroutine( _currentCoroutine );
+                StopCoroutine(_currentCoroutine);
             }
         }
+        UpdatePlayerReference();
     }
 
     IEnumerator StartShoot()
@@ -46,11 +44,44 @@ public class GunBase : MonoBehaviour
         }
     }
 
-
     public void Shoot()
     {
-        var projectile = Instantiate(prefabProjectile);
-        projectile.transform.position = positionToShoot.position;
-        projectile.side = playerSideReference.transform.localScale.x;
+        if (audioRandomPlayAudioClips != null)
+        {
+            audioRandomPlayAudioClips.PlayRandom();
+        }
+
+        if (prefabProjectile != null && positionToShoot != null)
+        {
+            var projectile = Instantiate(prefabProjectile);
+            projectile.transform.position = positionToShoot.position;
+
+            if (playerSideReference != null)
+            {
+                projectile.side = playerSideReference.localScale.x;
+            }
+            else
+            {
+                Debug.LogError("Player side reference is not assigned or has been destroyed.");
+                UpdatePlayerReference(); // Tentar atualizar a referência do jogador novamente
+            }
+        }
+        else
+        {
+            Debug.LogError("Projectile or Position to Shoot is not assigned.");
+        }
+    }
+
+    public void UpdatePlayerReference()
+    {
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        if (playerObject != null)
+        {
+            playerSideReference = playerObject.transform;
+        }
+        else
+        {
+            Debug.LogError("Player object not found in the scene.");
+        }
     }
 }
